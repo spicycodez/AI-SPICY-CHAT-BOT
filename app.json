@@ -1,46 +1,59 @@
 {
-  "name": "FlirtyChatBot",
-  "description": "AI-powered flirty Telegram chat bot (Pyrogram + Groq), single-repo, Docker-based",
-  "repository": "https://github.com/your-username/FlirtyChatBot",
-  "stack": "container",
+  "name": "AI-SPICY-CHAT-BOT",
+  "description": "Free AI-powered Telegram chat bot using Groq API",
+  "logo": "https://telegra.ph/file/2c6d1a6f78eba6199933a.jpg",
+  "keywords": [
+    "chatbot",
+    "ai",
+    "groq",
+    "pyrogram",
+    "telegram"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "repository": "https://github.com/spicycodez/AI-SPICY-CHAT-BOT",
   "env": {
     "API_ID": {
-      "description": "Telegram API ID — https://my.telegram.org se lo"
+      "description": "Your Telegram API ID from https://my.telegram.org",
+      "required": true
     },
     "API_HASH": {
-      "description": "Telegram API Hash — https://my.telegram.org se lo"
+      "description": "Your Telegram API Hash from https://my.telegram.org",
+      "required": true
     },
     "BOT_TOKEN": {
-      "description": "@BotFather se bana bot token"
-    },
-    "SESSION_STRING": {
-      "description": "Optional — assistant/userbot session string (generate_session.py se banao)",
-      "required": false
+      "description": "Bot token from @BotFather",
+      "required": true
     },
     "GROQ_API_KEY": {
-      "description": "Free API key — https://console.groq.com se lo"
-    },
-    "GROQ_MODEL": {
-      "description": "Groq model name",
-      "value": "openai/gpt-oss-20b"
+      "description": "Free API key from https://console.groq.com",
+      "required": true
     },
     "BOT_NAME": {
-      "description": "Persona ka naam",
+      "description": "Name of your bot",
+      "required": false,
       "value": "Pari"
     },
-    "START_IMG": {
-      "description": "Optional — /start aur thank-you panel ki banner image URL",
+    "MEMORY_LIMIT": {
+      "description": "Number of previous messages to remember",
+      "required": false,
+      "value": "10"
+    },
+    "GROQ_MODEL": {
+      "description": "Groq model to use",
+      "required": false,
+      "value": "mixtral-8x7b-32768"
+    },
+    "MONGO_URL": {
+      "description": "MongoDB URL (optional)",
       "required": false
     },
-    "MEMORY_LIMIT": {
-      "description": "Kitne purane messages yaad rakhe",
-      "value": "10"
-    }
-  },
-  "formation": {
-    "worker": {
-      "quantity": 1,
-      "size": "basic"
+    "START_IMG": {
+      "description": "Image URL for /start command (optional)",
+      "required": false
     }
   }
 }

@@ -1,176 +1,202 @@
-# FlirtyChatBot 💬✨
+# 🚀 AI-SPICY-CHAT-BOT
 
-Telegram group/DM ke liye AI-powered flirty chat bot. Jab bhi koi tag kare ya
-reply kare, ek sweet/romantic persona AI se reply generate hoke aata hai —
-free Groq API use karke.
+A **FREE**, **AI-powered Telegram chat bot** using the **Groq API** with a clean, modular ANNIECHATBOT-style architecture.
 
-**Structure** AnonXMusic jaise modular pattern pe based hai (core / plugins / ai /
-ui / utils), bas music ki jagah yahan sirf chatting hai — koi voice chat /
-pytgcalls nahi hai.
+## ✨ Features
 
-## Kya kya milta hai
+- 🤖 **Free AI** - Powered by Groq (completely free!)
+- 💬 **Smart Chat** - Natural conversations with context memory
+- 👥 **Groups & DMs** - Works everywhere!
+- ⚡ **Lightning Fast** - Groq provides ultra-fast inference
+- 🎨 **Customizable** - Easy to modify personality and behavior
+- 📦 **Modular** - Clean plugin-based architecture (ANNIECHATBOT style)
+- 🐳 **Docker Ready** - Easy deployment
+- ☁️ **Cloud Deployment** - Heroku, VPS, or Docker
 
-- `/start`, `/help`, `/reset` commands
-- Group mein **@mention** ya **reply** karne par AI response
-- Private DM mein har message ka AI reply (auto — mention ki zarurat nahi)
-- Optional **Assistant/Userbot** — agar chahiye ki "BOT" tag na dikhe, apne
-  personal account se bhi bot jaisa chat ho (bilkul AnonXMusic ke assistant jaisa)
-- Har chat ki short memory (pichle messages yaad rakhta hai, natural context ke liye)
-- Persona fully customizable — naam, tone, sab `.env` aur `bot/ai/persona.py` se
-- **Premium /start panel** — photo + caption + inline buttons, private aur
-  group ke liye alag-alag (Add to Group, DM, Help, Reset)
-- Group mein add hote hi automatic **thank-you panel** (photo + caption + buttons)
-- Ek hi repo mein backend + AI integration + Docker + Heroku config — kahin alag
-  se kuch host nahi karna, same repo deploy karo aur sab chal jaayega
+## 🛠️ Tech Stack
 
-## Setup
+- **Language:** Python 3.11+
+- **Framework:** Pyrogram (Telegram API)
+- **AI:** Groq API (Free)
+- **Database:** MongoDB (optional)
+- **Deployment:** Docker, Heroku, VPS
 
-### 1. Project install karo
+## 📋 Setup
+
+### 1️⃣ Prerequisites
+
+- Python 3.11 or higher
+- A Telegram account
+- Groq API key (free from [console.groq.com](https://console.groq.com))
+
+### 2️⃣ Get Telegram Credentials
+
+1. Go to [https://my.telegram.org](https://my.telegram.org)
+2. Login with your phone number
+3. Click "API Development Tools"
+4. Create an app and get your `API_ID` and `API_HASH`
+
+### 3️⃣ Create Bot with @BotFather
+
+1. Open [@BotFather](https://t.me/BotFather) on Telegram
+2. Send `/newbot`
+3. Follow the steps to get your `BOT_TOKEN`
+4. **Important:** Send `/setprivacy` → select your bot → choose **Disable**
+
+### 4️⃣ Get Groq API Key
+
+1. Go to [https://console.groq.com](https://console.groq.com)
+2. Sign up for free
+3. Create an API key
+
+### 5️⃣ Local Setup
+
 ```bash
-cd FlirtyChatBot
-pip install -r requirements.txt --break-system-packages
-```
-(Agar virtual environment use kar rahe ho toh `--break-system-packages` ki zarurat nahi)
+# Clone repo
+git clone https://github.com/spicycodez/AI-SPICY-CHAT-BOT.git
+cd AI-SPICY-CHAT-BOT
 
-> Windows par agar `tgcrypto` install mein error aaye, usse requirements.txt se
-> hata do — bot bina uske bhi chalega, bas thoda slow.
+# Install dependencies
+pip install -r requirements.txt
 
-### 2. Telegram API_ID / API_HASH lo
-1. https://my.telegram.org par jao, apne number se login karo
-2. **API Development Tools** → koi bhi naam/description daalke app create karo
-3. `api_id` aur `api_hash` mil jayenge
-
-### 3. Bot banao (@BotFather)
-1. Telegram par [@BotFather](https://t.me/BotFather) kholo
-2. `/newbot` bhejo, naam aur username set karo
-3. Jo **token** milega, wahi `BOT_TOKEN` hai
-4. **Zaroori:** `/setprivacy` bhejo → apna bot select karo → **Disable** choose karo
-   (Isse bina ye kiye bot group ke normal messages nahi dekh payega, sirf commands dikhenge)
-
-### 4. Groq API key lo (FREE)
-1. https://console.groq.com par jao, sign up karo
-2. **API Keys** section se naya key banao — `GROQ_API_KEY` yahi hai
-
-### 5. `.env` file banao
-`.env.example` ko copy karke `.env` banao, aur upar ke saare values bhar do:
-```bash
+# Copy example env file
 cp .env.example .env
+
+# Fill in your credentials in .env
+# nano .env  (or use your favorite editor)
+
+# Run the bot
+python -m SPICYBOT
 ```
 
-### 6. (Optional) Assistant/Userbot setup
-Agar chahiye ki tumhara personal account bhi bot ki tarah chat kare (bina "BOT" tag ke):
+## 🐳 Docker Setup
+
 ```bash
-python generate_session.py
+# Build and run with docker-compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
 ```
-Phone number + OTP maangega, phir ek **SESSION_STRING** dega — usse `.env` mein paste kar do.
 
-⚠️ Note: Userbot automation Telegram ke ToS ke thoda grey-area mein aata hai
-(spam-jaisa automated use disallowed hai), lekin apne khud ke group mein personal
-chat ke liye use karna extremely common hai — yehi pattern AnonXMusic jaise bots
-ke "assistant" mein bhi hota hai. Bas ise spam ya bahut saare unknown groups mein
-mat daalo, apne account ka risk khud samjho.
+## 🚀 Heroku Deployment
 
-### 7. Bot ko group mein add karo
-- Bot (aur agar bana hai toh assistant/userbot account) ko group mein add karo
-- Bot ko **admin** bana do (ya sirf privacy already disable kar di ho toh normal member bhi chalega)
-
-### 8. Run karo (local testing ke liye)
 ```bash
-python main.py
-```
-Production/VPS/Heroku pe deploy karna ho toh niche **"Deploy — Sab Kuch Isi Repo Se"**
-section dekho — Docker se sab kuch isi ek repo se chal jaayega.
-
-## Commands
-| Command | Kaam |
-|---|---|
-| `/start` | Private ya group ke hisaab se alag intro panel |
-| `/help` | Commands list |
-| `/reset` | Us chat ki memory clear karo |
-
-## Premium UI Panels 🎨
-Teen jagah pe photo + caption + inline buttons wala panel aata hai:
-
-1. **`/start` (private mein)** — Add Me To Your Group / Help / Reset buttons
-2. **`/start` (group mein)** — chhota panel, Message Me Privately button
-3. **Naye group mein add hote hi** — automatic thank-you panel, Help / Add To
-   Another Group buttons
-
-Photo dikhane ke liye `.env` mein `START_IMG` set karo (ek image URL — public
-internet pe host hui koi bhi image, jaise apna banaya hua logo/banner imgbb ya
-GitHub pe upload karke). **Khali chhod doge toh koi dikkat nahi** — bot khud
-text-only panel pe fallback ho jaayega, kuch crash nahi hoga. Apni khud ki
-image use karna — kahin se bhi random copyrighted image mat lena.
-
-Buttons ka "Add Me To Your Group" wala link khud-ba-khud tumhare bot ke username
-se ban jaata hai (koi manual config nahi chahiye).
-
-## Customize kaise karo
-- **Naam/tone:** `.env` mein `BOT_NAME` badlo, deeper personality `bot/ai/persona.py`
-  mein `SYSTEM_PROMPT` edit karke
-- **Panel wording:** `bot/ui/texts.py` — start/thank-you/help ka poora text yahan hai
-- **Buttons:** `bot/ui/keyboards.py` — button add/remove/rename yahan se
-- **AI model:** `.env` mein `GROQ_MODEL` — `openai/gpt-oss-20b` (fast) ya
-  `openai/gpt-oss-120b` (zyada smart, thoda slow)
-- **Memory length:** `.env` mein `MEMORY_LIMIT`
-- Tip: Agar shayari wala touch chahiye, `persona.py` mein ek line add kar do jaise
-  "kabhi kabhi Urdu shayari ka chhota sa touch bhi de sakti ho" — persona khud
-  usko blend kar lega
-
-## Deploy — Sab Kuch Isi Repo Se 🚀
-
-**Important:** AI (Groq) alag se host nahi karna — wo already isi repo/process ke
-andar hai. Jab container/dyno chalta hai, wahi ek process Telegram bot ko bhi
-handle karta hai aur Groq ko seedha internet pe API call bhi karta hai. Ek repo,
-ek deploy, sab kuch usi mein chalta hai — koi doosri jagah kuch host nahi karna.
-
-Repo mein ye deployment files already hain:
-- `Dockerfile` — image kaise banegi
-- `docker-compose.yml` — VPS/local pe ek command mein chalane ke liye
-- `heroku.yml` + `app.json` — Heroku (container stack) ke liye
-
-### Option A: VPS pe (Docker)
-```bash
-git clone <tumhara-repo-url>
-cd FlirtyChatBot
-cp .env.example .env      # sab values bharo
-docker compose up -d --build
-```
-Logs dekhne ke liye: `docker compose logs -f`
-Rokne ke liye: `docker compose down`
-
-VPS restart ho ya crash ho, `restart: unless-stopped` ki wajah se bot khud wapas
-chalu ho jaayega.
-
-### Option B: Heroku pe (Docker/container stack)
-```bash
+# Login to Heroku
 heroku login
-heroku create tumhara-app-name
-heroku stack:set container -a tumhara-app-name
 
-# Heroku .env file use NAHI karta — config vars seedha set karne padte hain:
-heroku config:set API_ID=xxxx API_HASH=xxxx BOT_TOKEN=xxxx GROQ_API_KEY=xxxx -a tumhara-app-name
-heroku config:set SESSION_STRING=xxxx -a tumhara-app-name   # optional, assistant ke liye
+# Create app
+heroku create your-app-name
 
+# Set environment variables
+heroku config:set API_ID=your_api_id
+heroku config:set API_HASH=your_api_hash
+heroku config:set BOT_TOKEN=your_bot_token
+heroku config:set GROQ_API_KEY=your_groq_key
+
+# Deploy
 git push heroku main
 
-# Zaroori: worker dyno khud start nahi hota, manually scale karna padta hai
-heroku ps:scale worker=1 -a tumhara-app-name
+# Scale worker
+heroku ps:scale worker=1
+
+# View logs
+heroku logs --tail
 ```
-Logs: `heroku logs --tail -a tumhara-app-name`
 
-⚠️ **Dyno type zaroor check karo:** Heroku ka free tier hai hi nahi ab (2022 mein
-hi hata diya gaya tha). **Eco dyno ($5/month) inactivity par sleep ho jaata hai**
-— ek continuously-running chat bot ke liye ye theek nahi, bot beech mein so
-sakta hai. Isliye kam se kam **Basic dyno ($7/month, hamesha on)** use karo.
-Budget tight hai toh VPS (DigitalOcean/Hetzner jaisi jagah ~$4-6/month ka droplet)
-zyada reliable aur sasta padega, aur sleep wala issue bhi nahi hoga.
+## 📖 Commands
 
-`app.json` mein saare zaroori config vars documented hain — GitHub pe push karne
-ke baad (aur `repository` field apne asli repo URL se replace karke) chaho toh
-README mein "Deploy to Heroku" button bhi laga sakte ho.
+| Command | Usage |
+|---------|-------|
+| `/start` | Show welcome menu |
+| `/help` | Show help message |
+| `/reset` | Clear chat memory |
 
-## Tech stack
-- **Pyrogram** — Telegram MTProto client (bot + userbot dono)
-- **Groq** — free, fast LLM inference (OpenAI-compatible API)
-- **python-dotenv** — `.env` se config load karne ke liye
+## 💬 Usage
+
+### In Groups
+- **Tag the bot:** `@your_bot_name your message`
+- **Reply to bot:** Reply to any message from the bot
+
+### In Private DM
+- Just type any message!
+
+## ⚙️ Configuration
+
+Edit `.env` file to customize:
+
+```env
+# Bot personality
+BOT_NAME=Pari
+
+# Memory (how many previous messages to remember)
+MEMORY_LIMIT=10
+
+# AI Model (see Groq docs for options)
+GROQ_MODEL=mixtral-8x7b-32768
+
+# Optional - Panel image
+START_IMG=https://your-image-url.jpg
+```
+
+## 🧠 Available Groq Models
+
+- `mixtral-8x7b-32768` - Fast & capable (default)
+- `llama2-70b-4096` - Large & powerful
+- `gemma-7b-it` - Lightweight
+
+See [Groq docs](https://console.groq.com/docs/models) for latest models.
+
+## 📁 Project Structure
+
+```
+SPICYBOT/
+├── __init__.py          # Bot client & config
+├── __main__.py          # Entry point
+├── modules/             # Plugins
+│   ├── start.py         # /start command
+│   ├── chat.py          # Chat handler
+│   ├── welcome.py       # Welcome messages
+│   └── callbacks.py     # Button callbacks
+└── utils/
+    └── ai.py            # Groq API integration
+
+config.py               # Configuration
+requirements.txt        # Dependencies
+Dockerfile              # Docker image
+app.json                # Heroku config
+```
+
+## 🤝 Contributing
+
+Feel free to fork, modify, and improve!
+
+## 📝 License
+
+MIT License - Use freely for any purpose
+
+## 🐛 Troubleshooting
+
+### Bot not responding
+- Check if bot is added to the group
+- Check if privacy is disabled (`/setprivacy` in @BotFather)
+- Make sure all env vars are set correctly
+
+### API errors
+- Verify your Groq API key is valid
+- Check your Telegram credentials
+- Ensure bot token is correct
+
+## 💬 Support
+
+- 📧 Issues? Open a GitHub issue
+- 🤝 PRs welcome!
+
+---
+
+**Made with ❤️ by spicycodez**
+
+⭐ Star this repo if you found it useful!
