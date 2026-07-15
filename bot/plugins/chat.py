@@ -29,6 +29,7 @@ async def _process(client, message: Message):
     print(f"[CHAT] Message text: {message.text[:50] if message.text else 'NO TEXT'}", flush=True)
     print(f"[CHAT] From: {message.from_user.first_name if message.from_user else 'UNKNOWN'}", flush=True)
     
+    # Skip if no text or is command
     if not message.text or message.text.startswith("/"):
         print(f"[CHAT] Skipping: no text or is command", flush=True)
         return
@@ -91,10 +92,14 @@ async def _process(client, message: Message):
         traceback.print_exc(file=sys.stdout)
 
 
-@bot.on_message(filters.text & ~filters.command)
+@bot.on_message(filters.text)
 async def bot_chat_handler(client, message: Message):
     print(f"[HANDLER] ===== bot_chat_handler TRIGGERED =====", flush=True)
     try:
+        # Skip if it's a command
+        if message.text and message.text.startswith("/"):
+            print(f"[HANDLER] Skipping command: {message.text}", flush=True)
+            return
         await _process(client, message)
     except Exception as e:
         print(f"[HANDLER ERROR] bot_chat_handler crashed: {type(e).__name__}: {str(e)}", flush=True)
@@ -103,10 +108,14 @@ async def bot_chat_handler(client, message: Message):
 
 
 if assistant:
-    @assistant.on_message(filters.text & ~filters.command)
+    @assistant.on_message(filters.text)
     async def assistant_chat_handler(client, message: Message):
         print(f"[HANDLER] ===== assistant_chat_handler TRIGGERED =====", flush=True)
         try:
+            # Skip if it's a command
+            if message.text and message.text.startswith("/"):
+                print(f"[HANDLER] Skipping command: {message.text}", flush=True)
+                return
             await _process(client, message)
         except Exception as e:
             print(f"[HANDLER ERROR] assistant_chat_handler crashed: {type(e).__name__}: {str(e)}", flush=True)
