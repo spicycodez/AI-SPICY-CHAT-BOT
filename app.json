@@ -1,0 +1,46 @@
+{
+  "name": "FlirtyChatBot",
+  "description": "AI-powered flirty Telegram chat bot (Pyrogram + Groq), single-repo, Docker-based",
+  "repository": "https://github.com/your-username/FlirtyChatBot",
+  "stack": "container",
+  "env": {
+    "API_ID": {
+      "description": "Telegram API ID — https://my.telegram.org se lo"
+    },
+    "API_HASH": {
+      "description": "Telegram API Hash — https://my.telegram.org se lo"
+    },
+    "BOT_TOKEN": {
+      "description": "@BotFather se bana bot token"
+    },
+    "SESSION_STRING": {
+      "description": "Optional — assistant/userbot session string (generate_session.py se banao)",
+      "required": false
+    },
+    "GROQ_API_KEY": {
+      "description": "Free API key — https://console.groq.com se lo"
+    },
+    "GROQ_MODEL": {
+      "description": "Groq model name",
+      "value": "openai/gpt-oss-20b"
+    },
+    "BOT_NAME": {
+      "description": "Persona ka naam",
+      "value": "Pari"
+    },
+    "START_IMG": {
+      "description": "Optional — /start aur thank-you panel ki banner image URL",
+      "required": false
+    },
+    "MEMORY_LIMIT": {
+      "description": "Kitne purane messages yaad rakhe",
+      "value": "10"
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  }
+}
