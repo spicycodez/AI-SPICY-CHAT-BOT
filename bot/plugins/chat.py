@@ -40,7 +40,7 @@ async def _process(client, message: Message):
 
     if message.chat.type == ChatType.PRIVATE:
         should_reply = True
-        print(f"[CHAT] Private chat - should_reply=True", flush=True)
+        print(f"[CHAT] Private DM - should_reply=True", flush=True)
     else:
         replied_to_me = bool(
             message.reply_to_message
