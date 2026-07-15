@@ -25,44 +25,47 @@ except Exception:
 
 
 async def _process(client, message: Message):
-    print(f"[CHAT] Message received: {message.text[:50] if message.text else 'NO TEXT'}", flush=True)
+    print(f"[CHAT] ===== NEW MESSAGE RECEIVED =====", flush=True)
+    print(f"[CHAT] Message text: {message.text[:50] if message.text else 'NO TEXT'}", flush=True)
+    print(f"[CHAT] From: {message.from_user.first_name if message.from_user else 'UNKNOWN'}", flush=True)
     
     if not message.text or message.text.startswith("/"):
         print(f"[CHAT] Skipping: no text or is command", flush=True)
         return
 
     my_id = self_ids.get(client)
-    print(f"[CHAT] my_id: {my_id}, chat_type: {message.chat.type}", flush=True)
+    print(f"[CHAT] my_id from self_ids: {my_id}", flush=True)
+    print(f"[CHAT] Chat type: {message.chat.type}", flush=True)
     
     if not my_id:
-        print(f"[CHAT] Skipping: client not fully started", flush=True)
-        return  # client abhi fully start nahi hua
+        print(f"[CHAT] ERROR: client not fully started yet! my_id is None", flush=True)
+        return
 
     if message.chat.type == ChatType.PRIVATE:
         should_reply = True
-        print(f"[CHAT] Private DM - should_reply=True", flush=True)
+        print(f"[CHAT] ✅ PRIVATE DM - WILL REPLY", flush=True)
     else:
         replied_to_me = bool(
             message.reply_to_message
             and message.reply_to_message.from_user
             and message.reply_to_message.from_user.id == my_id
         )
-        should_reply = bool(message.mentioned or replied_to_me)
-        print(f"[CHAT] Group chat - mentioned={message.mentioned}, replied_to_me={replied_to_me}, should_reply={should_reply}", flush=True)
+        mentioned = message.mentioned if hasattr(message, 'mentioned') else False
+        should_reply = bool(mentioned or replied_to_me)
+        print(f"[CHAT] Group chat - mentioned={mentioned}, replied_to_me={replied_to_me}, should_reply={should_reply}", flush=True)
 
     if not should_reply:
         print(f"[CHAT] Skipping: should_reply is False", flush=True)
         return
 
     user_name = message.from_user.first_name if message.from_user else "Someone"
-    print(f"[CHAT] Processing message from {user_name}: {message.text}", flush=True)
+    print(f"[CHAT] ✅ Will process message from {user_name}: {message.text}", flush=True)
 
     try:
         await client.send_chat_action(message.chat.id, "typing")
         print(f"[CHAT] Typing indicator sent", flush=True)
     except Exception as e:
         print(f"[CHAT] Typing indicator failed: {e}", flush=True)
-        pass
 
     # register chat in MongoDB (best-effort)
     if register_chat:
@@ -74,7 +77,6 @@ async def _process(client, message: Message):
             print(f"[CHAT] Chat registered in MongoDB", flush=True)
         except Exception as e:
             print(f"[CHAT] MongoDB registration failed: {e}", flush=True)
-            pass
 
     try:
         print(f"[CHAT] Calling get_ai_reply...", flush=True)
@@ -87,17 +89,26 @@ async def _process(client, message: Message):
         print(error_msg, flush=True)
         import traceback
         traceback.print_exc(file=sys.stdout)
-        raise
 
 
-@bot.on_message(filters.text)
+@bot.on_message(filters.text & ~filters.command)
 async def bot_chat_handler(client, message: Message):
-    print(f"[HANDLER] bot_chat_handler triggered", flush=True)
-    await _process(client, message)
+    print(f"[HANDLER] ===== bot_chat_handler TRIGGERED =====", flush=True)
+    try:
+        await _process(client, message)
+    except Exception as e:
+        print(f"[HANDLER ERROR] bot_chat_handler crashed: {type(e).__name__}: {str(e)}", flush=True)
+        import traceback
+        traceback.print_exc(file=sys.stdout)
 
 
 if assistant:
-    @assistant.on_message(filters.text)
+    @assistant.on_message(filters.text & ~filters.command)
     async def assistant_chat_handler(client, message: Message):
-        print(f"[HANDLER] assistant_chat_handler triggered", flush=True)
-        await _process(client, message)
+        print(f"[HANDLER] ===== assistant_chat_handler TRIGGERED =====", flush=True)
+        try:
+            await _process(client, message)
+        except Exception as e:
+            print(f"[HANDLER ERROR] assistant_chat_handler crashed: {type(e).__name__}: {str(e)}", flush=True)
+            import traceback
+            traceback.print_exc(file=sys.stdout)
