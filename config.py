@@ -36,6 +36,18 @@ START_IMG = os.getenv("START_IMG", "")
 # Har chat mein kitne purane messages yaad rakhe (conversation context ke liye)
 MEMORY_LIMIT = int(os.getenv("MEMORY_LIMIT", "10"))
 
+# MongoDB connection URL (optional but required for broadcast persistence)
+MONGO_URL = os.getenv("MONGO_URL", "")
+
+# SUDO users (comma separated list of Telegram user IDs). Example: "12345,67890"
+SUDO_USERS = set()
+_sudo_raw = os.getenv("SUDO_USERS", "")
+if _sudo_raw:
+    try:
+        SUDO_USERS = set(int(x.strip()) for x in _sudo_raw.split(",") if x.strip())
+    except ValueError:
+        print("WARNING: SUDO_USERS contains non-integer values; ignoring them.")
+
 
 def validate():
     """Zaroori env vars check karta hai, missing hone par clear error deta hai."""

@@ -16,6 +16,12 @@ from pyrogram.enums import ChatType
 from bot.core.clients import bot, assistant, self_ids
 from bot.ai.engine import get_ai_reply
 
+# optional DB registration helper
+try:
+    from bot.db.mongo import register_chat
+except Exception:
+    register_chat = None
+
 
 async def _process(client, message: Message):
     if not message.text or message.text.startswith("/"):
@@ -44,6 +50,16 @@ async def _process(client, message: Message):
         await client.send_chat_action(message.chat.id, "typing")
     except Exception:
         pass
+
+    # register chat in MongoDB (best-effort)
+    if register_chat:
+        try:
+            chat_type = message.chat.type.value if hasattr(message.chat.type, "value") else str(message.chat.type)
+            title = getattr(message.chat, "title", None)
+            username = getattr(message.from_user, "username", None)
+            await register_chat(message.chat.id, chat_type, title, username)
+        except Exception:
+            pass
 
     reply_text = await get_ai_reply(message.chat.id, user_name, message.text)
     await message.reply_text(reply_text)
