@@ -7,11 +7,9 @@ Ye sirf `bot` (BotFather) client pe kaam karte hain — assistant sirf chat kart
 commands ka kaam bot ka hai.
 """
 import sys
-from pyrogram import filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.enums import ChatType
 
-from bot.core.clients import bot
 from bot.utils.memory import clear_history
 from bot.ui.texts import start_private_text, start_group_text, help_text
 from bot.ui.keyboards import start_private_keyboard, start_group_keyboard
@@ -48,7 +46,6 @@ async def _send_start_panel(client, message: Message):
     print(f"[START] ✅ Message sent successfully", flush=True)
 
 
-@bot.on_message(filters.command("start"))
 async def start_cmd(client, message: Message):
     print(f"[COMMAND] /start command received from {message.from_user.first_name if message.from_user else 'UNKNOWN'}", flush=True)
     try:
@@ -64,7 +61,6 @@ async def start_cmd(client, message: Message):
             pass
 
 
-@bot.on_message(filters.command("help"))
 async def help_cmd(client, message: Message):
     print(f"[COMMAND] /help command received", flush=True)
     try:
@@ -78,7 +74,6 @@ async def help_cmd(client, message: Message):
         traceback.print_exc(file=sys.stdout)
 
 
-@bot.on_message(filters.command("reset"))
 async def reset_cmd(client, message: Message):
     print(f"[COMMAND] /reset command received", flush=True)
     try:
@@ -92,7 +87,6 @@ async def reset_cmd(client, message: Message):
         traceback.print_exc(file=sys.stdout)
 
 
-@bot.on_callback_query(filters.regex("^help$"))
 async def help_callback(client, callback_query: CallbackQuery):
     print(f"[CALLBACK] help button clicked", flush=True)
     try:
@@ -107,7 +101,6 @@ async def help_callback(client, callback_query: CallbackQuery):
         traceback.print_exc(file=sys.stdout)
 
 
-@bot.on_callback_query(filters.regex("^reset$"))
 async def reset_callback(client, callback_query: CallbackQuery):
     print(f"[CALLBACK] reset button clicked", flush=True)
     try:
